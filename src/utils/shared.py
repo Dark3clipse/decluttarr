@@ -309,8 +309,8 @@ async def remove_download(
                 API_KEY,
                 {"removeFromClient": removeFromClient, "blocklist": addToBlocklist},
             )
-            if not removeFromClient and settingsDict['QBITTORRENT_URL'] and settingsDict['OBSOLETE_QBIT_TAG']:
-                await rest_post(url=settingsDict['QBITTORRENT_URL']+'/torrents/createTags', data={'hashes': hashes, 'tags': settingsDict['OBSOLETE_QBIT_TAG']}, headers={'content-type': 'application/x-www-form-urlencoded'}, cookies=settingsDict['QBIT_COOKIE'])
+            if not removeFromClient and settingsDict['QBITTORRENT_URL'] and settingsDict['OBSOLETE_QBIT_TAG'] and affectedItem["downloadId"]:
+                await rest_post(url=settingsDict['QBITTORRENT_URL']+'/torrents/createTags', data={'hashes': affectedItem["downloadId"], 'tags': settingsDict['OBSOLETE_QBIT_TAG']}, headers={'content-type': 'application/x-www-form-urlencoded'}, cookies=settingsDict['QBIT_COOKIE'])
 
         deleted_downloads.dict.append(affectedItem["downloadId"])
 

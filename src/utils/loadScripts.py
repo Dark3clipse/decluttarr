@@ -99,7 +99,9 @@ def showSettings(settingsDict):
         logger.info('Minimum speed enforced: %s KB/s', str(settingsDict['MIN_DOWNLOAD_SPEED'])) 
     logger.info('Permitted number of times before stalled/missing metadata/slow downloads are removed: %s', str(settingsDict['PERMITTED_ATTEMPTS']))      
     if settingsDict['QBITTORRENT_URL']: 
-        logger.info('Downloads with this tag will be skipped: \"%s\"', settingsDict['NO_STALLED_REMOVAL_QBIT_TAG'])  
+        logger.info('Downloads with this tag will be skipped: \"%s\"', settingsDict['NO_STALLED_REMOVAL_QBIT_TAG'])
+        if settingsDict['OBSOLETE_QBIT_TAG']:
+            logger.info('Obsolete torrents that cannot be removed will be given this tag: \"%s\"', settingsDict['OBSOLETE_QBIT_TAG'])
         logger.info('Private Trackers will be skipped: %s', settingsDict['IGNORE_PRIVATE_TRACKERS'])        
     
     logger.info('') 
