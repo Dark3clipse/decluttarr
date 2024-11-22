@@ -25,6 +25,7 @@ RUN_PERIODIC_RESCANS            = get_config_value('RUN_PERIODIC_RESCANS',      
 MIN_DOWNLOAD_SPEED              = get_config_value('MIN_DOWNLOAD_SPEED',            'feature_settings',     False,  int,    0)
 PERMITTED_ATTEMPTS              = get_config_value('PERMITTED_ATTEMPTS',            'feature_settings',     False,  int,    3)
 NO_STALLED_REMOVAL_QBIT_TAG     = get_config_value('NO_STALLED_REMOVAL_QBIT_TAG',   'feature_settings',     False,  str,   'Don\'t Kill')
+OBSOLETE_QBIT_TAG               = get_config_value('OBSOLETE_QBIT_TAG',             'feature_settings',     False,  str,   'Obsolete')
 IGNORE_PRIVATE_TRACKERS         = get_config_value('IGNORE_PRIVATE_TRACKERS',       'feature_settings',     False,  bool,   True)
 FAILED_IMPORT_MESSAGE_PATTERNS  = get_config_value('FAILED_IMPORT_MESSAGE_PATTERNS','feature_settings',     False,  list,   [])
 

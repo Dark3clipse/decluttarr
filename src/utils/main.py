@@ -56,6 +56,9 @@ async def main(settingsDict):
     # Create qBit protection tag if not existing
     await createQbitProtectionTag(settingsDict)
 
+    # Create qBit obsolete tag if not existing
+    await createQbitObsoleteTag(settingsDict)
+
     # Show Logger Level
     showLoggerLevel(settingsDict)
 

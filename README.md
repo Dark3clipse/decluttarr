@@ -85,6 +85,7 @@ services:
      # Feature Settings
      PERMITTED_ATTEMPTS: 3
      NO_STALLED_REMOVAL_QBIT_TAG: Don't Kill
+     OBSOLETE_QBIT_TAG: Obsolete
      REMOVE_SLOW: True
      MIN_DOWNLOAD_SPEED: 100     
      FAILED_IMPORT_MESSAGE_PATTERNS: '
@@ -285,6 +286,13 @@ If it you face issues, please first check the closed issues before opening a new
 - Important: Also protects unmonitored downloads from being removed (relevant for multi-season packs)
 - Type: String
 - Is Mandatory: No (Defaults to `Don't Kill`)
+
+**OBSOLETE_QBIT_TAG**
+- Downloads in qBittorrent that would be removed if IGNORE_PRIVATE_TRACKERS wouldn't be true will be tagged with this value
+- Note: the tag can be used by third-party tools to remove these torrents after required seeding time has passed.
+- Tag is automatically created in qBittorrent (required qBittorrent is reachable on `QBITTORRENT_URL`)
+- Type: String
+- Is Mandatory: No (Defaults to `Obsolete`)
 
 **IGNORE_PRIVATE_TRACKERS**
 - Private torrents in qBittorrent will not be removed from the queue if this is set to true

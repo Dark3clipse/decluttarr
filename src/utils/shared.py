@@ -285,11 +285,18 @@ async def remove_download(
         if removeFromClient:
             logger.info(">>> Removing %s download: %s", failType, affectedItem["title"])
         else:
-            logger.info(
-                ">>> Removing %s download (without removing from torrent client): %s",
-                failType,
-                affectedItem["title"],
-            )
+            if settingsDict['OBSOLETE_QBIT_TAG']:
+                logger.info(
+                    ">>> Removing %s download (without removing from torrent client but with setting obsolete tag): %s",
+                    failType,
+                    affectedItem["title"],
+                )
+            else:
+                logger.info(
+                    ">>> Removing %s download (without removing from torrent client): %s",
+                    failType,
+                    affectedItem["title"],
+                )
 
         # Print out detailed removal messages (if any were added in the jobs)
         if "removal_messages" in affectedItem:
@@ -302,6 +309,9 @@ async def remove_download(
                 API_KEY,
                 {"removeFromClient": removeFromClient, "blocklist": addToBlocklist},
             )
+            if not removeFromClient and settingsDict['QBITTORRENT_URL'] and settingsDict['OBSOLETE_QBIT_TAG']:
+                await rest_post(url=settingsDict['QBITTORRENT_URL']+'/torrents/createTags', data={'hashes': hashes, 'tags': settingsDict['OBSOLETE_QBIT_TAG']}, headers={'content-type': 'application/x-www-form-urlencoded'}, cookies=settingsDict['QBIT_COOKIE'])
+
         deleted_downloads.dict.append(affectedItem["downloadId"])
 
     logger.debug(

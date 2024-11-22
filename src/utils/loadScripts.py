@@ -231,6 +231,16 @@ async def createQbitProtectionTag(settingsDict):
                 if not settingsDict['TEST_RUN']:
                     await rest_post(url=settingsDict['QBITTORRENT_URL']+'/torrents/createTags', data={'tags': settingsDict['NO_STALLED_REMOVAL_QBIT_TAG']}, headers={'content-type': 'application/x-www-form-urlencoded'}, cookies=settingsDict['QBIT_COOKIE'])
 
+async def createQbitObsoleteTag(settingsDict):
+    # Creates the qBit Obsolete tag if not already present
+    if settingsDict['QBITTORRENT_URL']:
+        current_tags = await rest_get(settingsDict['QBITTORRENT_URL']+'/torrents/tags',cookies=settingsDict['QBIT_COOKIE'])
+        if not settingsDict['OBSOLETE_QBIT_TAG'] in current_tags:
+            if settingsDict['QBITTORRENT_URL']:
+                logger.info('Creating tag in qBittorrent: %s', settingsDict['OBSOLETE_QBIT_TAG'])
+                if not settingsDict['TEST_RUN']:
+                    await rest_post(url=settingsDict['QBITTORRENT_URL']+'/torrents/createTags', data={'tags': settingsDict['OBSOLETE_QBIT_TAG']}, headers={'content-type': 'application/x-www-form-urlencoded'}, cookies=settingsDict['QBIT_COOKIE'])
+
 def showLoggerLevel(settingsDict):
     logger.info('#' * 50)
     if settingsDict['LOG_LEVEL'] == 'INFO':

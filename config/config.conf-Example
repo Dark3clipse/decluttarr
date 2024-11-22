@@ -18,6 +18,7 @@ RUN_PERIODIC_RESCANS        = {"SONARR": {"MISSING": true, "CUTOFF_UNMET": true,
 MIN_DOWNLOAD_SPEED          = 100
 PERMITTED_ATTEMPTS          = 3
 NO_STALLED_REMOVAL_QBIT_TAG = Don't Kill
+OBSOLETE_QBIT_TAG           = Obsolete
 IGNORE_PRIVATE_TRACKERS     = FALSE
 FAILED_IMPORT_MESSAGE_PATTERNS  = ["Not a Custom Format upgrade for existing", "Not an upgrade for existing"]
 
