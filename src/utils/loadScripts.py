@@ -6,6 +6,7 @@ logger = verboselogs.VerboseLogger(__name__)
 from dateutil.relativedelta import relativedelta as rd
 import requests 
 from src.utils.rest import rest_get, rest_post # 
+from src.utils.shared import qBitRefreshCookie
 import asyncio
 from packaging import version
 
@@ -27,6 +28,7 @@ async def getArrInstanceName(settingsDict, arrApp):
     except:
             settingsDict[arrApp + '_NAME'] = arrApp.title()
     return settingsDict
+
 
 async def getProtectedAndPrivateFromQbit(settingsDict):
     # Returns two lists containing the hashes of Qbit that are either protected by tag, or are private trackers (if IGNORE_PRIVATE_TRACKERS is true)
@@ -104,7 +106,8 @@ def showSettings(settingsDict):
         if settingsDict['SET_OBSOLETE_QBIT_TAG'] and settingsDict['OBSOLETE_QBIT_TAG']:
             logger.info('Obsolete private torrents will be given this tag: \"%s\"', settingsDict['OBSOLETE_QBIT_TAG'])
         logger.info('Private Trackers will be skipped: %s', settingsDict['IGNORE_PRIVATE_TRACKERS'])
-    
+    if settingsDict['IGNORED_DOWNLOAD_CLIENTS']: 
+        logger.info('Download clients skipped: %s',", ".join(settingsDict['IGNORED_DOWNLOAD_CLIENTS']))
     logger.info('') 
     logger.info('*** Configured Instances ***')
     
@@ -190,18 +193,9 @@ async def instanceChecks(settingsDict):
     # Check Bittorrent
     if settingsDict['QBITTORRENT_URL']:
         # Checking if qbit can be reached, and checking if version is OK
-        try: 
-            response = await asyncio.get_event_loop().run_in_executor(None, lambda: requests.post(settingsDict['QBITTORRENT_URL']+'/auth/login', data={'username': settingsDict['QBITTORRENT_USERNAME'], 'password': settingsDict['QBITTORRENT_PASSWORD']}, headers={'content-type': 'application/x-www-form-urlencoded'}, verify=settingsDict['SSL_VERIFICATION']))
-            if response.text == 'Fails.':
-                raise ConnectionError('Login failed.')
-            response.raise_for_status()
-            settingsDict['QBIT_COOKIE'] = {'SID': response.cookies['SID']} 
-        except Exception as error:
+        await qBitRefreshCookie(settingsDict)
+        if not settingsDict['QBIT_COOKIE']:
             error_occured = True
-            logger.error('!! %s Error: !!', 'qBittorrent')
-            logger.error('> %s', error)
-            logger.error('> Details:')
-            logger.error(response.text)
 
         if not error_occured:
             qbit_version = await rest_get(settingsDict['QBITTORRENT_URL']+'/app/version',cookies=settingsDict['QBIT_COOKIE'])
