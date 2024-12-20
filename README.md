@@ -76,6 +76,7 @@ services:
      REMOVE_SLOW: True
      REMOVE_STALLED: True
      REMOVE_UNMONITORED: True
+     SET_OBSOLETE_QBIT_TAG: True
      RUN_PERIODIC_RESCANS: '
         {
           "SONARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 7},
@@ -234,6 +235,15 @@ Steers which type of cleaning is applied to the downloads queue
 - Permissible Values: True, False
 - Is Mandatory: No (Defaults to False)
 
+**SET_OBSOLETE_QBIT_TAG**
+- Set a tag on torrents in qBittorrent that can be removed, but are kept because they are private torrents.
+- Note: Has no effect when `IGNORE_PRIVATE_TRACKERS==False`. 
+- The tag can be used by third-party tools to remove these torrents after required seeding time has passed.
+- Tag is automatically created in qBittorrent (required qBittorrent is reachable on `QBITTORRENT_URL`)
+- Type: Boolean
+- Permissible Values: True, False
+- Is Mandatory: No (Defaults to False)
+
 **RUN_PERIODIC_RESCANS**
 - Steers whether searches are automatically triggered for items that are missing or have not yet met the cutoff
 - Note: Only supports Radarr/Sonarr currently (Lidarr depending on: https://github.com/Lidarr/Lidarr/pull/5084 / Readarr Depending on: https://github.com/Readarr/Readarr/pull/3724)
@@ -288,7 +298,7 @@ If it you face issues, please first check the closed issues before opening a new
 - Is Mandatory: No (Defaults to `Don't Kill`)
 
 **OBSOLETE_QBIT_TAG**
-- Downloads in qBittorrent that would be removed if IGNORE_PRIVATE_TRACKERS wouldn't be true will be tagged with this value
+- Downloads in qBittorrent will receive this tag when: (1) `SET_OBSOLETE_QBIT_TAG==True`, (2) `IGNORE_PRIVATE_TRACKERS==True`, (3) torrent is private, (4) torrent is due for removal.
 - Note: the tag can be used by third-party tools to remove these torrents after required seeding time has passed.
 - Tag is automatically created in qBittorrent (required qBittorrent is reachable on `QBITTORRENT_URL`)
 - Type: String

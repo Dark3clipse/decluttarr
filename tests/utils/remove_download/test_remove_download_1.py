@@ -8,7 +8,7 @@ failType = "failed import"
 
 @pytest.mark.asyncio
 async def test_removal_with_removal_messages(monkeypatch, caplog):
-    settingsDict = {"TEST_RUN": True, "OBSOLETE_QBIT_TAG": ""}
+    settingsDict = {"TEST_RUN": True}
     removeFromClient = True
     expected_removal_messages = {
         ">>> Removing failed import download: Sonarr Title 1",
@@ -30,7 +30,7 @@ async def test_removal_with_removal_messages(monkeypatch, caplog):
 
 @pytest.mark.asyncio
 async def test_schizophrenic_removal_with_removal_messages(monkeypatch, caplog):
-    settingsDict = {"TEST_RUN": True, "OBSOLETE_QBIT_TAG": ""}
+    settingsDict = {"TEST_RUN": True}
     removeFromClient = False
     expected_removal_messages = {
         ">>> Removing failed import download (without removing from torrent client): Sonarr Title 1",
@@ -51,7 +51,7 @@ async def test_schizophrenic_removal_with_removal_messages(monkeypatch, caplog):
 
 @pytest.mark.asyncio
 async def test_obsolete_removal_with_removal_messages(monkeypatch, caplog):
-    settingsDict = {"TEST_RUN": True, "OBSOLETE_QBIT_TAG": "Obsolete"}
+    settingsDict = {"TEST_RUN": True, "SET_OBSOLETE_QBIT_TAG": True}
     removeFromClient = False
     expected_removal_messages = {
         ">>> Removing failed import download (without removing from torrent client but with setting obsolete tag): Sonarr Title 1",

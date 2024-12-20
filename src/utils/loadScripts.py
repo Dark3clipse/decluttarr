@@ -90,6 +90,7 @@ def showSettings(settingsDict):
     logger.info('%s | Removing slow downloads (%s)', str(settingsDict['REMOVE_SLOW']), 'REMOVE_SLOW')
     logger.info('%s | Removing stalled downloads (%s)', str(settingsDict['REMOVE_STALLED']), 'REMOVE_STALLED')
     logger.info('%s | Removing downloads belonging to unmonitored items (%s)', str(settingsDict['REMOVE_UNMONITORED']), 'REMOVE_UNMONITORED') 
+    logger.info('%s | Setting obsolete tag on private torrents that are due for removal (%s)', str(settingsDict['SET_OBSOLETE_QBIT_TAG']), 'SET_OBSOLETE_QBIT_TAG')
     for arr_type, RESCAN_SETTINGS in settingsDict['RUN_PERIODIC_RESCANS'].items():
         logger.info('%s/%s (%s) | Search missing/cutoff-unmet items. Max queries/list: %s. Min. days to re-search: %s (%s)', RESCAN_SETTINGS['MISSING'],  RESCAN_SETTINGS['CUTOFF_UNMET'], arr_type, RESCAN_SETTINGS['MAX_CONCURRENT_SCANS'], RESCAN_SETTINGS['MIN_DAYS_BEFORE_RESCAN'], 'RUN_PERIODIC_RESCANS') 
     logger.info('') 
@@ -100,9 +101,9 @@ def showSettings(settingsDict):
     logger.info('Permitted number of times before stalled/missing metadata/slow downloads are removed: %s', str(settingsDict['PERMITTED_ATTEMPTS']))      
     if settingsDict['QBITTORRENT_URL']: 
         logger.info('Downloads with this tag will be skipped: \"%s\"', settingsDict['NO_STALLED_REMOVAL_QBIT_TAG'])
-        if settingsDict['OBSOLETE_QBIT_TAG']:
-            logger.info('Obsolete torrents that cannot be removed will be given this tag: \"%s\"', settingsDict['OBSOLETE_QBIT_TAG'])
-        logger.info('Private Trackers will be skipped: %s', settingsDict['IGNORE_PRIVATE_TRACKERS'])        
+        if settingsDict['SET_OBSOLETE_QBIT_TAG'] and settingsDict['OBSOLETE_QBIT_TAG']:
+            logger.info('Obsolete private torrents will be given this tag: \"%s\"', settingsDict['OBSOLETE_QBIT_TAG'])
+        logger.info('Private Trackers will be skipped: %s', settingsDict['IGNORE_PRIVATE_TRACKERS'])
     
     logger.info('') 
     logger.info('*** Configured Instances ***')
@@ -234,8 +235,8 @@ async def createQbitProtectionTag(settingsDict):
                     await rest_post(url=settingsDict['QBITTORRENT_URL']+'/torrents/createTags', data={'tags': settingsDict['NO_STALLED_REMOVAL_QBIT_TAG']}, headers={'content-type': 'application/x-www-form-urlencoded'}, cookies=settingsDict['QBIT_COOKIE'])
 
 async def createQbitObsoleteTag(settingsDict):
-    # Creates the qBit Obsolete tag if not already present
-    if settingsDict['QBITTORRENT_URL']:
+    # Creates the qBit Obsolete tag if not already present, feature is enabled, and tag is not an empty string
+    if settingsDict['QBITTORRENT_URL'] and settingsDict['SET_OBSOLETE_QBIT_TAG'] and settingsDict['OBSOLETE_QBIT_TAG']:
         current_tags = await rest_get(settingsDict['QBITTORRENT_URL']+'/torrents/tags',cookies=settingsDict['QBIT_COOKIE'])
         if not settingsDict['OBSOLETE_QBIT_TAG'] in current_tags:
             if settingsDict['QBITTORRENT_URL']:
