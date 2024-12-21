@@ -35,6 +35,7 @@ You can find a sample docker-compose.yml [here](#method-1-docker).
     -   When detecting slow downloads, the speeds provided by the \*arr apps will be used, which is less accurate than what qBittorrent returns when queried directly
     -   The feature that allows to protect downloads from removal (NO_STALLED_REMOVAL_QBIT_TAG) does not work
     -   The feature that ignores private trackers does not work
+    -   The "obsolete" feature that tags private torrents due for removal rather than removing them does not work
 -   If you see strange errors such as "found 10 / 3 times", consider turning on the setting "Reject Blocklisted Torrent Hashes While Grabbing". On nightly Radarr/Sonarr/Readarr/Lidarr/Whisparr, the option is located under settings/indexers in the advanced options of each indexer, on Prowlarr it is under settings/apps and then the advanced settings of the respective app
 -   When broken torrents are removed the files belonging to them are deleted
 -   Across all removal types: A new download from another source is automatically added by radarr/sonarr/lidarr/readarr/whisparr (if available)
