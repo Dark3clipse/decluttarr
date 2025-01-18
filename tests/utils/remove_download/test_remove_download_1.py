@@ -54,7 +54,7 @@ async def test_obsolete_removal_with_removal_messages(monkeypatch, caplog):
     settingsDict = {"TEST_RUN": True, "SET_OBSOLETE_QBIT_TAG": True}
     removeFromClient = False
     expected_removal_messages = {
-        ">>> Removing failed import download (without removing from torrent client but with setting obsolete tag): Sonarr Title 1",
+        ">>> Removing failed import download (keeping it in torrent client and adding tag 'Obsolete'): Sonarr Title 1",
         ">>>>> Tracked Download State: importBlocked",
         ">>>>> Status Messages (matching specified patterns):",
         ">>>>> - Episode XYZ was not found in the grabbed release: Sonarr Title 2.mkv",

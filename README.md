@@ -263,9 +263,9 @@ Steers which type of cleaning is applied to the downloads queue
 -   Is Mandatory: No (Defaults to False)
 
 **SET_OBSOLETE_QBIT_TAG**
-- Set a tag on torrents in qBittorrent that can be removed, but are kept because they are private torrents.
+- If this feature is turned on, private torrents in qBittorrent are not removed once the conditions for removal are met; instead, they are tagged with the obsolete-tag
 - Note: Has no effect when `IGNORE_PRIVATE_TRACKERS==False`. 
-- The tag can be used by third-party tools to remove these torrents after required seeding time has passed.
+- The tag can be used by third-party tools (such as [qbit_manage](https://github.com/StuffAnThings/qbit_manage)) to remove these torrents after required seeding time has passed.
 - Tag is automatically created in qBittorrent (required qBittorrent is reachable on `QBITTORRENT_URL`)
 - Type: Boolean
 - Permissible Values: True, False
@@ -331,7 +331,7 @@ If it you face issues, please first check the closed issues before opening a new
 
 **OBSOLETE_QBIT_TAG**
 - Downloads in qBittorrent will receive this tag when: (1) `SET_OBSOLETE_QBIT_TAG==True`, (2) `IGNORE_PRIVATE_TRACKERS==True`, (3) torrent is private, (4) torrent is due for removal.
-- Note: the tag can be used by third-party tools to remove these torrents after required seeding time has passed.
+- Note: the tag can be used by third-party tools (such as [qbit_manage](https://github.com/StuffAnThings/qbit_manage)) to remove these torrents after required seeding time has passed.
 - Tag is automatically created in qBittorrent (required qBittorrent is reachable on `QBITTORRENT_URL`)
 - Type: String
 - Is Mandatory: No (Defaults to `Obsolete`)
